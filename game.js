@@ -141,12 +141,23 @@ boostHud.style.cssText =
   'text-shadow:0 0 10px #138CF6;pointer-events:none;';
 document.body.appendChild(boostHud);
 
-/* ── Mouse (steering + boost via shiftKey) ───── */
+/* ── Mouse (steering) + Keyboard (boost via either Shift key) ── */
 document.addEventListener('mousemove', (e) => {
   mouseNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouseNDC.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  boosting = e.shiftKey;
-  boostHud.style.display = boosting ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Shift') {
+    boosting = true;
+    boostHud.style.display = 'block';
+  }
+});
+document.addEventListener('keyup', (e) => {
+  if (e.key === 'Shift') {
+    boosting = false;
+    boostHud.style.display = 'none';
+  }
 });
 
 /* ── Trail Data ──────────────────────────────── */
@@ -735,7 +746,12 @@ const hintModeLabels = {
 
 function showStartStep1() {
   startScreen.innerHTML =
-    '<h1 style="font-size:56px;margin-bottom:16px;letter-spacing:4px;">World Snake</h1>' +
+    '<h1 style="font-size:56px;margin-bottom:16px;letter-spacing:4px;">Pigeon Post</h1>' +
+    '<p style="font-size:15px;max-width:800px;text-align:center;line-height:1.6;margin-bottom:28px;color:rgba(255,255,255,0.55);">' +
+      'Fly your pigeon around the globe and collect message bottles.<br>' +
+      'Move the mouse to steer. Hold Shift to boost.<br>' +
+      'Each pickup grows your trail — don\'t fly into it!' +
+    '</p>' +
     '<p style="font-size:20px;margin-bottom:32px;color:rgba(255,255,255,0.7);">Choose your hint format</p>' +
     '<div style="display:flex;flex-direction:column;gap:16px;">' +
       `<button class="hint-btn" data-hint="name" style="${btnStyle}background:#2ecc71;">Country Name</button>` +
@@ -753,7 +769,7 @@ function showStartStep1() {
 
 function showStartStep2() {
   startScreen.innerHTML =
-    '<h1 style="font-size:56px;margin-bottom:16px;letter-spacing:4px;">World Snake</h1>' +
+    '<h1 style="font-size:56px;margin-bottom:16px;letter-spacing:4px;">Pigeon Post</h1>' +
     '<p style="font-size:20px;margin-bottom:24px;color:rgba(255,255,255,0.7);">Choose difficulty</p>' +
     '<div style="display:flex;flex-direction:column;gap:16px;">' +
       `<button class="diff-btn" data-diff="easy" style="${btnStyle}background:#2ecc71;">Easy</button>` +
